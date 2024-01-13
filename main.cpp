@@ -9,6 +9,7 @@ Color darkGreen = {43, 51, 42, 255};
 
 int cellSize = 30;
 int cellCount = 25;
+int offset = 75;
 
 double lastUpdateTime = 0;
 
@@ -132,6 +133,7 @@ public:
             snake.Update();
             CheckCollisionWithFood();
             CheckCollisionWithEdges();
+            CheckCollisionWithTail();
         }
 
     }
@@ -164,15 +166,14 @@ public:
     {
         deque<Vector2>  headlessBody = snake.body;
         headlessBody.pop_front();
-        if(ElementInDeque(snake.body[0],headlessBody))
+        if(ElementinDeque(snake.body[0],headlessBody))
         {
             GameOver();
         }
     }
 };
 int main () {
-    cout << "Starting the game \n";
-    InitWindow(cellSize * cellCount, cellSize * cellCount, "Snake Project");
+    InitWindow(2*offset + cellSize * cellCount, 2*offset + cellSize * cellCount, "Snake Project");
     SetTargetFPS(60);
 
     Game game = Game();
@@ -207,6 +208,7 @@ int main () {
         }
 
         ClearBackground(green);
+        DrawRectangleLinesEx(Rectangle{(float)offset-5, (float)offset-5, (float)cellSize*cellCount+10, (float)cellSize*cellCount+10}, 5, darkGreen);
         game.Draw();
         EndDrawing();
     }
