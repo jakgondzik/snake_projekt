@@ -48,7 +48,7 @@ public :
         {
             float x = body[i].x;
             float y = body[i].y;
-            Rectangle segment = Rectangle{x*cellSize, y*cellSize, (float)cellSize, (float)cellSize};
+            Rectangle segment = Rectangle{offset+x*cellSize, offset+y*cellSize, (float)cellSize, (float)cellSize};
             DrawRectangleRounded(segment, 0.5, 6, darkGreen);
         }
     }
@@ -92,7 +92,7 @@ public:
     }
     void Draw()
     {
-        DrawTexture(texture, position.x * cellSize, position.y * cellSize, WHITE);
+        DrawTexture(texture,offset + position.x * cellSize, offset + position.y * cellSize, WHITE);
     }
     Vector2 GenerateRandomCell()
     {
@@ -120,6 +120,7 @@ public:
     Snake snake = Snake();
     Food food = Food(snake.body);
     bool running = true;
+    int score = 0;
 
     void Draw()
     {
@@ -143,6 +144,7 @@ public:
         {
             food.position = food.GenerateRandomPos(snake.body);
             snake.addSegment = true;
+            score++;
         }
     }
     void CheckCollisionWithEdges()
@@ -161,6 +163,7 @@ public:
         snake.Reset();
         food.position = food.GenerateRandomPos(snake.body);
         running = false;
+        score = 0;
     }
     void CheckCollisionWithTail()
     {
@@ -209,6 +212,8 @@ int main () {
 
         ClearBackground(green);
         DrawRectangleLinesEx(Rectangle{(float)offset-5, (float)offset-5, (float)cellSize*cellCount+10, (float)cellSize*cellCount+10}, 5, darkGreen);
+        DrawText("Project Snake!", offset - 5, 20, 40, darkGreen);
+        DrawText(TextFormat("%i",game.score), offset-5, offset+cellSize*cellCount+10, 40, darkGreen);
         game.Draw();
         EndDrawing();
     }
